@@ -1,0 +1,1151 @@
+{
+  "source": "mass_update_sales_info_957457780_20261019195717.xlsx",
+  "multiplier": 0.77,
+  "rounding": "Nearest PHP centavo",
+  "products": 54,
+  "matchedVariants": 190,
+  "unmatchedCatalog": [],
+  "unmatchedSource": [],
+  "variants": [
+    {
+      "productId": "57166101259",
+      "variationId": "366373552251",
+      "sourcePrice": 83,
+      "sellingPrice": 63.91
+    },
+    {
+      "productId": "57166101259",
+      "variationId": "366373552252",
+      "sourcePrice": 83,
+      "sellingPrice": 63.91
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "346449237321",
+      "sourcePrice": 230,
+      "sellingPrice": 177.1
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "346449237317",
+      "sourcePrice": 154,
+      "sellingPrice": 118.58
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "316449813551",
+      "sourcePrice": 106,
+      "sellingPrice": 81.62
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "346449237319",
+      "sourcePrice": 154,
+      "sellingPrice": 118.58
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "346449237314",
+      "sourcePrice": 137,
+      "sellingPrice": 105.49
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "346449237324",
+      "sourcePrice": 230,
+      "sellingPrice": 177.1
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "316449813554",
+      "sourcePrice": 106,
+      "sellingPrice": 81.62
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "346449237313",
+      "sourcePrice": 137,
+      "sellingPrice": 105.49
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "346449237316",
+      "sourcePrice": 137,
+      "sellingPrice": 105.49
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "346449237323",
+      "sourcePrice": 230,
+      "sellingPrice": 177.1
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "346449237315",
+      "sourcePrice": 137,
+      "sellingPrice": 105.49
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "316449813552",
+      "sourcePrice": 106,
+      "sellingPrice": 81.62
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "346449237322",
+      "sourcePrice": 230,
+      "sellingPrice": 177.1
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "346449237318",
+      "sourcePrice": 154,
+      "sellingPrice": 118.58
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "316449813553",
+      "sourcePrice": 106,
+      "sellingPrice": 81.62
+    },
+    {
+      "productId": "56167061599",
+      "variationId": "346449237320",
+      "sourcePrice": 154,
+      "sellingPrice": 118.58
+    },
+    {
+      "productId": "55317070495",
+      "variationId": "321449224735",
+      "sourcePrice": 1767,
+      "sellingPrice": 1360.59
+    },
+    {
+      "productId": "55117070541",
+      "variationId": "311449813423",
+      "sourcePrice": 235,
+      "sellingPrice": 180.95
+    },
+    {
+      "productId": "55117070541",
+      "variationId": "311449813421",
+      "sourcePrice": 209,
+      "sellingPrice": 160.93
+    },
+    {
+      "productId": "55117070541",
+      "variationId": "311449813422",
+      "sourcePrice": 212,
+      "sellingPrice": 163.24
+    },
+    {
+      "productId": "55117070441",
+      "variationId": "277923785361",
+      "sourcePrice": 91,
+      "sellingPrice": 70.07
+    },
+    {
+      "productId": "55017070500",
+      "variationId": "376449232944",
+      "sourcePrice": 140,
+      "sellingPrice": 107.8
+    },
+    {
+      "productId": "55017070500",
+      "variationId": "361449233179",
+      "sourcePrice": 70,
+      "sellingPrice": 53.9
+    },
+    {
+      "productId": "52417059381",
+      "variationId": "316449813359",
+      "sourcePrice": 122,
+      "sellingPrice": 93.94
+    },
+    {
+      "productId": "52417059381",
+      "variationId": "316449813360",
+      "sourcePrice": 234,
+      "sellingPrice": 180.18
+    },
+    {
+      "productId": "52417059381",
+      "variationId": "316449813357",
+      "sourcePrice": 86,
+      "sellingPrice": 66.22
+    },
+    {
+      "productId": "52417059381",
+      "variationId": "316449813358",
+      "sourcePrice": 107,
+      "sellingPrice": 82.39
+    },
+    {
+      "productId": "52317059513",
+      "variationId": "386449233097",
+      "sourcePrice": 38,
+      "sellingPrice": 29.26
+    },
+    {
+      "productId": "52317059513",
+      "variationId": "386449233098",
+      "sourcePrice": 64,
+      "sellingPrice": 49.28
+    },
+    {
+      "productId": "52317059402",
+      "variationId": "287923785368",
+      "sourcePrice": 225,
+      "sellingPrice": 173.25
+    },
+    {
+      "productId": "52317059402",
+      "variationId": "287923785366",
+      "sourcePrice": 194,
+      "sellingPrice": 149.38
+    },
+    {
+      "productId": "52317059402",
+      "variationId": "287923785367",
+      "sourcePrice": 202,
+      "sellingPrice": 155.54
+    },
+    {
+      "productId": "52217059461",
+      "variationId": "139517583562",
+      "sourcePrice": 402,
+      "sellingPrice": 309.54
+    },
+    {
+      "productId": "52217059461",
+      "variationId": "139517583561",
+      "sourcePrice": 402,
+      "sellingPrice": 309.54
+    },
+    {
+      "productId": "51967065643",
+      "variationId": "326449224752",
+      "sourcePrice": 1338,
+      "sellingPrice": 1030.26
+    },
+    {
+      "productId": "51967065633",
+      "variationId": "321449224538",
+      "sourcePrice": 76,
+      "sellingPrice": 58.52
+    },
+    {
+      "productId": "51967065633",
+      "variationId": "321449224536",
+      "sourcePrice": 70,
+      "sellingPrice": 53.9
+    },
+    {
+      "productId": "51967065633",
+      "variationId": "321449224537",
+      "sourcePrice": 83,
+      "sellingPrice": 63.91
+    },
+    {
+      "productId": "51967065630",
+      "variationId": "316449809766",
+      "sourcePrice": 999,
+      "sellingPrice": 769.23
+    },
+    {
+      "productId": "51967065630",
+      "variationId": "316449809767",
+      "sourcePrice": 1115,
+      "sellingPrice": 858.55
+    },
+    {
+      "productId": "51967065630",
+      "variationId": "316449809765",
+      "sourcePrice": 964,
+      "sellingPrice": 742.28
+    },
+    {
+      "productId": "51867065643",
+      "variationId": "326449237261",
+      "sourcePrice": 168,
+      "sellingPrice": 129.36
+    },
+    {
+      "productId": "51867065641",
+      "variationId": "326449237252",
+      "sourcePrice": 86,
+      "sellingPrice": 66.22
+    },
+    {
+      "productId": "51867065641",
+      "variationId": "326449237253",
+      "sourcePrice": 114,
+      "sellingPrice": 87.78
+    },
+    {
+      "productId": "51867065641",
+      "variationId": "282923785379",
+      "sourcePrice": 63,
+      "sellingPrice": 48.51
+    },
+    {
+      "productId": "51867065641",
+      "variationId": "326449237251",
+      "sourcePrice": 73,
+      "sellingPrice": 56.21
+    },
+    {
+      "productId": "51867065609",
+      "variationId": "287923782588",
+      "sourcePrice": 255,
+      "sellingPrice": 196.35
+    },
+    {
+      "productId": "49117081552",
+      "variationId": "361449237207",
+      "sourcePrice": 1287,
+      "sellingPrice": 990.99
+    },
+    {
+      "productId": "49117081552",
+      "variationId": "361449237205",
+      "sourcePrice": 1105,
+      "sellingPrice": 850.85
+    },
+    {
+      "productId": "49117081552",
+      "variationId": "361449237206",
+      "sourcePrice": 1151,
+      "sellingPrice": 886.27
+    },
+    {
+      "productId": "46566130003",
+      "variationId": "406373551009",
+      "sourcePrice": 154,
+      "sellingPrice": 118.58
+    },
+    {
+      "productId": "46566130003",
+      "variationId": "406373551010",
+      "sourcePrice": 154,
+      "sellingPrice": 118.58
+    },
+    {
+      "productId": "46566130003",
+      "variationId": "406373551011",
+      "sourcePrice": 154,
+      "sellingPrice": 118.58
+    },
+    {
+      "productId": "44817085676",
+      "variationId": "341449237218",
+      "sourcePrice": 285,
+      "sellingPrice": 219.45
+    },
+    {
+      "productId": "44817085616",
+      "variationId": "391449233063",
+      "sourcePrice": 949,
+      "sellingPrice": 730.73
+    },
+    {
+      "productId": "44817085616",
+      "variationId": "391449233064",
+      "sourcePrice": 984,
+      "sellingPrice": 757.68
+    },
+    {
+      "productId": "44817085616",
+      "variationId": "391449233065",
+      "sourcePrice": 1100,
+      "sellingPrice": 847
+    },
+    {
+      "productId": "44817085596",
+      "variationId": "311449813557",
+      "sourcePrice": 1193,
+      "sellingPrice": 918.61
+    },
+    {
+      "productId": "44817085596",
+      "variationId": "311449813558",
+      "sourcePrice": 1325,
+      "sellingPrice": 1020.25
+    },
+    {
+      "productId": "44817085596",
+      "variationId": "311449813556",
+      "sourcePrice": 1154,
+      "sellingPrice": 888.58
+    },
+    {
+      "productId": "44717085635",
+      "variationId": "307923777604",
+      "sourcePrice": 225,
+      "sellingPrice": 173.25
+    },
+    {
+      "productId": "44717085635",
+      "variationId": "307923777602",
+      "sourcePrice": 194,
+      "sellingPrice": 149.38
+    },
+    {
+      "productId": "44717085635",
+      "variationId": "307923777603",
+      "sourcePrice": 202,
+      "sellingPrice": 155.54
+    },
+    {
+      "productId": "42683600993",
+      "variationId": "262880080959",
+      "sourcePrice": 150,
+      "sellingPrice": 115.5
+    },
+    {
+      "productId": "42683600993",
+      "variationId": "262880080960",
+      "sourcePrice": 150,
+      "sellingPrice": 115.5
+    },
+    {
+      "productId": "42683600993",
+      "variationId": "262880080961",
+      "sourcePrice": 150,
+      "sellingPrice": 115.5
+    },
+    {
+      "productId": "42683600993",
+      "variationId": "262880080962",
+      "sourcePrice": 150,
+      "sellingPrice": 115.5
+    },
+    {
+      "productId": "42683600993",
+      "variationId": "262880080963",
+      "sourcePrice": 150,
+      "sellingPrice": 115.5
+    },
+    {
+      "productId": "42683600993",
+      "variationId": "262880080958",
+      "sourcePrice": 150,
+      "sellingPrice": 115.5
+    },
+    {
+      "productId": "25561265701",
+      "variationId": "255285079076",
+      "sourcePrice": 121,
+      "sellingPrice": 93.17
+    },
+    {
+      "productId": "25561261443",
+      "variationId": "226023810963",
+      "sourcePrice": 20,
+      "sellingPrice": 15.4
+    },
+    {
+      "productId": "25561261443",
+      "variationId": "226023810962",
+      "sourcePrice": 27,
+      "sellingPrice": 20.79
+    },
+    {
+      "productId": "24511258693",
+      "variationId": "240285003634",
+      "sourcePrice": 181,
+      "sellingPrice": 139.37
+    },
+    {
+      "productId": "24361273373",
+      "variationId": "29456335646",
+      "sourcePrice": 356,
+      "sellingPrice": 274.12
+    },
+    {
+      "productId": "24361273373",
+      "variationId": "29456335645",
+      "sourcePrice": 387,
+      "sellingPrice": 297.99
+    },
+    {
+      "productId": "23726031595",
+      "variationId": "221018252947",
+      "sourcePrice": 1414,
+      "sellingPrice": 1088.78
+    },
+    {
+      "productId": "23726031595",
+      "variationId": "221018252945",
+      "sourcePrice": 1459,
+      "sellingPrice": 1123.43
+    },
+    {
+      "productId": "23726031595",
+      "variationId": "221018252946",
+      "sourcePrice": 1646,
+      "sellingPrice": 1267.42
+    },
+    {
+      "productId": "23626032389",
+      "variationId": "69260038269",
+      "sourcePrice": 65,
+      "sellingPrice": 50.05
+    },
+    {
+      "productId": "23626032389",
+      "variationId": "69260038270",
+      "sourcePrice": 105,
+      "sellingPrice": 80.85
+    },
+    {
+      "productId": "23626032389",
+      "variationId": "69260038271",
+      "sourcePrice": 42,
+      "sellingPrice": 32.34
+    },
+    {
+      "productId": "23626032389",
+      "variationId": "69260038268",
+      "sourcePrice": 70,
+      "sellingPrice": 53.9
+    },
+    {
+      "productId": "23626031273",
+      "variationId": "231018287934",
+      "sourcePrice": 460,
+      "sellingPrice": 354.2
+    },
+    {
+      "productId": "23626030586",
+      "variationId": "29337816749",
+      "sourcePrice": 39,
+      "sellingPrice": 30.03
+    },
+    {
+      "productId": "23626030586",
+      "variationId": "29337816745",
+      "sourcePrice": 39,
+      "sellingPrice": 30.03
+    },
+    {
+      "productId": "23626030586",
+      "variationId": "29337816746",
+      "sourcePrice": 39,
+      "sellingPrice": 30.03
+    },
+    {
+      "productId": "23626030586",
+      "variationId": "29337816748",
+      "sourcePrice": 39,
+      "sellingPrice": 30.03
+    },
+    {
+      "productId": "23626029565",
+      "variationId": "213898906475",
+      "sourcePrice": 72,
+      "sellingPrice": 55.44
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956521",
+      "sourcePrice": 395,
+      "sellingPrice": 304.15
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956522",
+      "sourcePrice": 395,
+      "sellingPrice": 304.15
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956531",
+      "sourcePrice": 395,
+      "sellingPrice": 304.15
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956536",
+      "sourcePrice": 380,
+      "sellingPrice": 292.6
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956528",
+      "sourcePrice": 380,
+      "sellingPrice": 292.6
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956532",
+      "sourcePrice": 415,
+      "sellingPrice": 319.55
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956529",
+      "sourcePrice": 380,
+      "sellingPrice": 292.6
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956526",
+      "sourcePrice": 415,
+      "sellingPrice": 319.55
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956524",
+      "sourcePrice": 415,
+      "sellingPrice": 319.55
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956527",
+      "sourcePrice": 380,
+      "sellingPrice": 292.6
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956533",
+      "sourcePrice": 395,
+      "sellingPrice": 304.15
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956525",
+      "sourcePrice": 415,
+      "sellingPrice": 319.55
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956538",
+      "sourcePrice": 395,
+      "sellingPrice": 304.15
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956537",
+      "sourcePrice": 380,
+      "sellingPrice": 292.6
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956535",
+      "sourcePrice": 415,
+      "sellingPrice": 319.55
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956523",
+      "sourcePrice": 395,
+      "sellingPrice": 304.15
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956530",
+      "sourcePrice": 380,
+      "sellingPrice": 292.6
+    },
+    {
+      "productId": "23326030189",
+      "variationId": "183898956534",
+      "sourcePrice": 415,
+      "sellingPrice": 319.55
+    },
+    {
+      "productId": "22826035668",
+      "variationId": "59260519878",
+      "sourcePrice": 127,
+      "sellingPrice": 97.79
+    },
+    {
+      "productId": "22826035668",
+      "variationId": "59260519879",
+      "sourcePrice": 127,
+      "sellingPrice": 97.79
+    },
+    {
+      "productId": "22826035668",
+      "variationId": "59260519880",
+      "sourcePrice": 71,
+      "sellingPrice": 54.67
+    },
+    {
+      "productId": "22826035668",
+      "variationId": "59260519881",
+      "sourcePrice": 71,
+      "sellingPrice": 54.67
+    },
+    {
+      "productId": "22826035668",
+      "variationId": "59260519882",
+      "sourcePrice": 71,
+      "sellingPrice": 54.67
+    },
+    {
+      "productId": "22826035668",
+      "variationId": "59260519877",
+      "sourcePrice": 127,
+      "sellingPrice": 97.79
+    },
+    {
+      "productId": "22726034606",
+      "variationId": "98615876653",
+      "sourcePrice": 82,
+      "sellingPrice": 63.14
+    },
+    {
+      "productId": "22726034606",
+      "variationId": "98615876654",
+      "sourcePrice": 82,
+      "sellingPrice": 63.14
+    },
+    {
+      "productId": "22726034606",
+      "variationId": "98615876655",
+      "sourcePrice": 82,
+      "sellingPrice": 63.14
+    },
+    {
+      "productId": "22726034606",
+      "variationId": "98615876652",
+      "sourcePrice": 82,
+      "sellingPrice": 63.14
+    },
+    {
+      "productId": "22626034981",
+      "variationId": "221018292289",
+      "sourcePrice": 1357,
+      "sellingPrice": 1044.89
+    },
+    {
+      "productId": "22626034981",
+      "variationId": "221018292287",
+      "sourcePrice": 1175,
+      "sellingPrice": 904.75
+    },
+    {
+      "productId": "22626034981",
+      "variationId": "221018292288",
+      "sourcePrice": 1221,
+      "sellingPrice": 940.17
+    },
+    {
+      "productId": "22626033363",
+      "variationId": "146641778849",
+      "sourcePrice": 30,
+      "sellingPrice": 23.1
+    },
+    {
+      "productId": "22626033363",
+      "variationId": "146641778850",
+      "sourcePrice": 20,
+      "sellingPrice": 15.4
+    },
+    {
+      "productId": "22626033363",
+      "variationId": "146641778851",
+      "sourcePrice": 30,
+      "sellingPrice": 23.1
+    },
+    {
+      "productId": "22626033363",
+      "variationId": "146641778848",
+      "sourcePrice": 20,
+      "sellingPrice": 15.4
+    },
+    {
+      "productId": "22426031673",
+      "variationId": "98615865045",
+      "sourcePrice": 228,
+      "sellingPrice": 175.56
+    },
+    {
+      "productId": "22426031673",
+      "variationId": "98615865046",
+      "sourcePrice": 237,
+      "sellingPrice": 182.49
+    },
+    {
+      "productId": "22426031673",
+      "variationId": "98615865047",
+      "sourcePrice": 268,
+      "sellingPrice": 206.36
+    },
+    {
+      "productId": "22326033829",
+      "variationId": "203898969269",
+      "sourcePrice": 1175,
+      "sellingPrice": 904.75
+    },
+    {
+      "productId": "22326033829",
+      "variationId": "203898969267",
+      "sourcePrice": 1337,
+      "sellingPrice": 1029.49
+    },
+    {
+      "productId": "22326033829",
+      "variationId": "203898969268",
+      "sourcePrice": 1135,
+      "sellingPrice": 873.95
+    },
+    {
+      "productId": "22226035753",
+      "variationId": "203899010652",
+      "sourcePrice": 29,
+      "sellingPrice": 22.33
+    },
+    {
+      "productId": "22126035240",
+      "variationId": "213898973598",
+      "sourcePrice": 279,
+      "sellingPrice": 214.83
+    },
+    {
+      "productId": "22126035240",
+      "variationId": "213898973599",
+      "sourcePrice": 295,
+      "sellingPrice": 227.15
+    },
+    {
+      "productId": "22126034436",
+      "variationId": "221018266084",
+      "sourcePrice": 207,
+      "sellingPrice": 159.39
+    },
+    {
+      "productId": "22126034436",
+      "variationId": "221018266085",
+      "sourcePrice": 215,
+      "sellingPrice": 165.55
+    },
+    {
+      "productId": "22126034436",
+      "variationId": "221018266083",
+      "sourcePrice": 238,
+      "sellingPrice": 183.26
+    },
+    {
+      "productId": "22026034644",
+      "variationId": "213898943482",
+      "sourcePrice": 62,
+      "sellingPrice": 47.74
+    },
+    {
+      "productId": "22026034644",
+      "variationId": "213898943483",
+      "sourcePrice": 62,
+      "sellingPrice": 47.74
+    },
+    {
+      "productId": "22026034644",
+      "variationId": "213898943484",
+      "sourcePrice": 62,
+      "sellingPrice": 47.74
+    },
+    {
+      "productId": "22026034644",
+      "variationId": "213898943479",
+      "sourcePrice": 62,
+      "sellingPrice": 47.74
+    },
+    {
+      "productId": "22026034644",
+      "variationId": "213898943480",
+      "sourcePrice": 62,
+      "sellingPrice": 47.74
+    },
+    {
+      "productId": "22026034644",
+      "variationId": "213898943481",
+      "sourcePrice": 62,
+      "sellingPrice": 47.74
+    },
+    {
+      "productId": "21973918756",
+      "variationId": "231018215050",
+      "sourcePrice": 569,
+      "sellingPrice": 438.13
+    },
+    {
+      "productId": "21973918756",
+      "variationId": "231018215051",
+      "sourcePrice": 478,
+      "sellingPrice": 368.06
+    },
+    {
+      "productId": "21973918756",
+      "variationId": "231018215052",
+      "sourcePrice": 518,
+      "sellingPrice": 398.86
+    },
+    {
+      "productId": "21473918946",
+      "variationId": "175605308035",
+      "sourcePrice": 47,
+      "sellingPrice": 36.19
+    },
+    {
+      "productId": "21473918946",
+      "variationId": "175605308029",
+      "sourcePrice": 47,
+      "sellingPrice": 36.19
+    },
+    {
+      "productId": "21473918946",
+      "variationId": "175605308030",
+      "sourcePrice": 47,
+      "sellingPrice": 36.19
+    },
+    {
+      "productId": "21473918946",
+      "variationId": "175605308031",
+      "sourcePrice": 47,
+      "sellingPrice": 36.19
+    },
+    {
+      "productId": "21473918946",
+      "variationId": "175605308032",
+      "sourcePrice": 47,
+      "sellingPrice": 36.19
+    },
+    {
+      "productId": "21473918946",
+      "variationId": "175605308033",
+      "sourcePrice": 47,
+      "sellingPrice": 36.19
+    },
+    {
+      "productId": "21473918946",
+      "variationId": "175605308034",
+      "sourcePrice": 47,
+      "sellingPrice": 36.19
+    },
+    {
+      "productId": "20373920483",
+      "variationId": "203898958539",
+      "sourcePrice": 99,
+      "sellingPrice": 76.23
+    },
+    {
+      "productId": "20373920483",
+      "variationId": "203898958540",
+      "sourcePrice": 113,
+      "sellingPrice": 87.01
+    },
+    {
+      "productId": "20273922063",
+      "variationId": "203898971440",
+      "sourcePrice": 79,
+      "sellingPrice": 60.83
+    },
+    {
+      "productId": "20273922063",
+      "variationId": "203898971441",
+      "sourcePrice": 79,
+      "sellingPrice": 60.83
+    },
+    {
+      "productId": "20273922063",
+      "variationId": "203898971436",
+      "sourcePrice": 79,
+      "sellingPrice": 60.83
+    },
+    {
+      "productId": "20273922063",
+      "variationId": "203898971437",
+      "sourcePrice": 79,
+      "sellingPrice": 60.83
+    },
+    {
+      "productId": "20273922063",
+      "variationId": "203898971438",
+      "sourcePrice": 79,
+      "sellingPrice": 60.83
+    },
+    {
+      "productId": "20273922063",
+      "variationId": "203898971439",
+      "sourcePrice": 79,
+      "sellingPrice": 60.83
+    },
+    {
+      "productId": "19973921602",
+      "variationId": "39261102200",
+      "sourcePrice": 69,
+      "sellingPrice": 53.13
+    },
+    {
+      "productId": "19973921602",
+      "variationId": "39261102201",
+      "sourcePrice": 69,
+      "sellingPrice": 53.13
+    },
+    {
+      "productId": "19973921602",
+      "variationId": "39261102196",
+      "sourcePrice": 69,
+      "sellingPrice": 53.13
+    },
+    {
+      "productId": "19973921602",
+      "variationId": "39261102197",
+      "sourcePrice": 69,
+      "sellingPrice": 53.13
+    },
+    {
+      "productId": "19973921602",
+      "variationId": "39261102198",
+      "sourcePrice": 69,
+      "sellingPrice": 53.13
+    },
+    {
+      "productId": "19973921602",
+      "variationId": "39261102199",
+      "sourcePrice": 69,
+      "sellingPrice": 53.13
+    },
+    {
+      "productId": "19973920445",
+      "variationId": "193898932912",
+      "sourcePrice": 999,
+      "sellingPrice": 769.23
+    },
+    {
+      "productId": "19973920445",
+      "variationId": "193898932913",
+      "sourcePrice": 1040,
+      "sellingPrice": 800.8
+    },
+    {
+      "productId": "19973920445",
+      "variationId": "193898932914",
+      "sourcePrice": 1161,
+      "sellingPrice": 893.97
+    },
+    {
+      "productId": "19873920739",
+      "variationId": "183898925168",
+      "sourcePrice": 204,
+      "sellingPrice": 157.08
+    },
+    {
+      "productId": "19873920739",
+      "variationId": "183898925169",
+      "sourcePrice": 210,
+      "sellingPrice": 161.7
+    },
+    {
+      "productId": "19873920739",
+      "variationId": "183898925170",
+      "sourcePrice": 235,
+      "sellingPrice": 180.95
+    },
+    {
+      "productId": "19273921188",
+      "variationId": "146641770824",
+      "sourcePrice": 66,
+      "sellingPrice": 50.82
+    },
+    {
+      "productId": "19273921188",
+      "variationId": "146641770825",
+      "sourcePrice": 79,
+      "sellingPrice": 60.83
+    },
+    {
+      "productId": "18073922875",
+      "variationId": "117956328682",
+      "sourcePrice": 90,
+      "sellingPrice": 69.3
+    },
+    {
+      "productId": "18073922875",
+      "variationId": "117956328686",
+      "sourcePrice": 90,
+      "sellingPrice": 69.3
+    },
+    {
+      "productId": "18073922875",
+      "variationId": "117956328683",
+      "sourcePrice": 90,
+      "sellingPrice": 69.3
+    },
+    {
+      "productId": "18073922875",
+      "variationId": "117956328689",
+      "sourcePrice": 90,
+      "sellingPrice": 69.3
+    },
+    {
+      "productId": "18073922875",
+      "variationId": "117956328691",
+      "sourcePrice": 90,
+      "sellingPrice": 69.3
+    },
+    {
+      "productId": "18073922875",
+      "variationId": "117956328684",
+      "sourcePrice": 45,
+      "sellingPrice": 34.65
+    },
+    {
+      "productId": "18073922875",
+      "variationId": "117956328690",
+      "sourcePrice": 90,
+      "sellingPrice": 69.3
+    },
+    {
+      "productId": "18073922875",
+      "variationId": "117956328692",
+      "sourcePrice": 45,
+      "sellingPrice": 34.65
+    },
+    {
+      "productId": "18073922875",
+      "variationId": "117956328685",
+      "sourcePrice": 90,
+      "sellingPrice": 69.3
+    },
+    {
+      "productId": "18073922875",
+      "variationId": "117956328687",
+      "sourcePrice": 90,
+      "sellingPrice": 69.3
+    },
+    {
+      "productId": "18073922875",
+      "variationId": "117956328688",
+      "sourcePrice": 90,
+      "sellingPrice": 69.3
+    },
+    {
+      "productId": "17092877362",
+      "variationId": "213898912287",
+      "sourcePrice": 91,
+      "sellingPrice": 70.07
+    },
+    {
+      "productId": "16492877175",
+      "variationId": "175605322310",
+      "sourcePrice": 272,
+      "sellingPrice": 209.44
+    },
+    {
+      "productId": "16492877175",
+      "variationId": "175605322311",
+      "sourcePrice": 236,
+      "sellingPrice": 181.72
+    },
+    {
+      "productId": "16492877175",
+      "variationId": "175605322309",
+      "sourcePrice": 247,
+      "sellingPrice": 190.19
+    }
+  ]
+}

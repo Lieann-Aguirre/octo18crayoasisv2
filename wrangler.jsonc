@@ -4,6 +4,6 @@
   "workers_dev":false,
   "d1_databases":[{"binding":"DB","database_name":"octo18","database_id":"2e4e5cf2-01ef-407e-8608-4bbee629a54d","migrations_dir":"migrations"}],
   "r2_buckets":[{"binding":"MEDIA","bucket_name":"octo18-media"}],
-  "vars":{"SITE_ORIGIN":"octo18crayoasis.online"},
+  "vars":{"SITE_ORIGIN":"https://octo18crayoasis.online"},
   "triggers":{"crons":["*/15 * * * *"]}
 }

@@ -52,7 +52,7 @@ Configure secrets through `wrangler secret put NAME` or the Cloudflare dashboard
 | `TURNSTILE_SECRET` | Server-side Turnstile verification |
 | `RESEND_API_KEY` | Email delivery |
 | `NOTIFY_FROM` | Sender on a domain verified by Resend |
-| `NOTIFY_TO` | `felivcianorenz029@gmail.com` initially |
+| `NOTIFY_TO` | `felicianorenz029@gmail.com` initially |
 | `CATALOG_BUILD_TOKEN` | Long random secret shared only with Pages builds |
 | `PAGES_DEPLOY_HOOK` | Production-branch Pages deploy hook URL |
 | `CF_ACCOUNT_ID` | Account containing Pages |

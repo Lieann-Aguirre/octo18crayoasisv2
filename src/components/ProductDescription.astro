@@ -1,0 +1,8 @@
+---
+interface Props { text: string }
+const {text}=Astro.props;
+const blocks=text.split(/\n\s*\n/).filter(Boolean);
+---
+<div class="product-description">
+ {blocks.map(block=>block.startsWith('## ')?<h3>{block.slice(3)}</h3>:block.split('\n').every(line=>line.startsWith('- '))?<ul>{block.split('\n').map(line=><li>{line.slice(2)}</li>)}</ul>:<p>{block}</p>)}
+</div>
