@@ -50,8 +50,10 @@ Configure secrets through `wrangler secret put NAME` or the Cloudflare dashboard
 | `ACCESS_AUD` | Access application audience |
 | `ADMIN_EMAIL` | Verified Renz login email |
 | `TURNSTILE_SECRET` | Server-side Turnstile verification |
-| `RESEND_API_KEY` | Email delivery |
-| `NOTIFY_FROM` | Sender on a domain verified by Resend |
+| `MICROSOFT_CLIENT_SECRET` | Entra application secret (Worker secret only) |
+| `MICROSOFT_TENANT_ID`, `MICROSOFT_CLIENT_ID` | Entra identifiers |
+| `SMTP_USER` | Microsoft 365 sender mailbox |
+| `NOTIFY_FROM` | Same mailbox as SMTP_USER |
 | `NOTIFY_TO` | `felicianorenz029@gmail.com` initially |
 | `CATALOG_BUILD_TOKEN` | Long random secret shared only with Pages builds |
 | `PAGES_DEPLOY_HOOK` | Production-branch Pages deploy hook URL |

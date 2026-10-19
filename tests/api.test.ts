@@ -1,6 +1,6 @@
 import {calculateEstimate,estimateText} from '../src/lib/estimate';
 import test from 'node:test';import assert from 'node:assert/strict';import {DatabaseSync} from 'node:sqlite';import {readFileSync} from 'node:fs';
-import worker,{publicCatalog,resolveItems,type Env} from '../worker/index';import {productSchema,publicationErrors,quoteSchema,type Product,type Settings} from '../src/lib/model';
+import worker,{notify,publicCatalog,resolveItems,type Env} from '../worker/index';import {productSchema,publicationErrors,quoteSchema,type Product,type Settings} from '../src/lib/model';
 import {generateKeyPair,exportJWK,SignJWT} from 'jose';
 import {cleanDescription} from '../src/lib/text.mjs';
 const source=JSON.parse(readFileSync('data/products.json','utf8')) as Product[];const settings=JSON.parse(readFileSync('data/settings.json','utf8')) as Settings;
@@ -45,9 +45,9 @@ test('changed or tampered prices require review; accepted retries retain their e
 });
 
 test('notification includes the saved estimate and never trusts client display names',async()=>{
- const {sqlite,env,ctx,jobs}=fixture();env.RESEND_API_KEY='test';env.NOTIFY_FROM='shop@example.com';const p=structuredClone(source[0]);p.status='published';sqlite.prepare("INSERT INTO publications(id,data,state) VALUES(?,?,'success')").run('approved',JSON.stringify(publicCatalog([p],settings,'approved')));
- const oldFetch=globalThis.fetch;let email='';globalThis.fetch=async(url,init)=>{if(String(url).includes('api.resend.com')){email=String(init?.body);return new Response('{}');}return new Response(JSON.stringify({success:true,hostname:'shop.test'}));};
- try{const q=validQuote();q.reviewedEstimate.items[0].name='Forged product title';assert.equal((await worker.fetch(req('/api/quotes',q),env,ctx)).status,201);await Promise.all(jobs);assert.match(email,/Estimated Grand Total/);assert.match(email,/Subtotal/);assert.doesNotMatch(email,/Forged product title/);assert.equal(sqlite.prepare('SELECT notification FROM quotes').get()?.notification,'sent');}finally{globalThis.fetch=oldFetch;}
+ const {sqlite,env,ctx,jobs}=fixture();env.NOTIFY_FROM='shop@example.com';const p=structuredClone(source[0]);p.status='published';sqlite.prepare("INSERT INTO publications(id,data,state) VALUES(?,?,'success')").run('approved',JSON.stringify(publicCatalog([p],settings,'approved')));
+ const oldFetch=globalThis.fetch;let email='';globalThis.fetch=async()=>new Response(JSON.stringify({success:true,hostname:'shop.test'}));
+ try{const q=validQuote();q.reviewedEstimate.items[0].name='Forged product title';assert.equal((await worker.fetch(req('/api/quotes',q),env,ctx)).status,201);await Promise.all(jobs);env.MICROSOFT_CLIENT_SECRET='test';await notify(env,q.requestId,async(_config,mail)=>{email=mail.text;});assert.match(email,/Estimated Grand Total/);assert.match(email,/Subtotal/);assert.doesNotMatch(email,/Forged product title/);assert.equal(sqlite.prepare('SELECT notification FROM quotes').get()?.notification,'sent');}finally{globalThis.fetch=oldFetch;}
 });
 
 test('researched copy keeps originals in a private archive and meets requested detail',()=>{
