@@ -125,3 +125,7 @@ Store backups privately, outside Git and public directories. They contain custom
 Use the Pages dashboard to roll back a bad deployment; confirm the restored `publication.json` marker. Also reconcile the live D1 publication pointer: the inquiry API uses the last successful publication record, so an operator must align publication status with the restored marker before reopening quote submission. A successful restore includes both the static deployment and its matching catalog snapshot.
 
 Renz should periodically review closed inquiries and remove personal data no longer required, following the published privacy policy and applicable business recordkeeping requirements. The dashboard supports individual inquiry deletion. Exported CSVs and backups need the same care as the live inbox.
+
+### Quote button unavailable
+
+A missing `PUBLIC_TURNSTILE_SITE_KEY` disables online submission at build time. Create a Turnstile widget covering the actual storefront hostname, set its public site key in the **Pages build environment**, and configure the paired `TURNSTILE_SECRET` on the **API Worker**. Rebuild Pages after changing the public key. Also confirm `/api/quotes` routes to the API Worker and an approved catalog publication exists. SMTP credentials alone do not enable submissions. Do not use Turnstile test keys in production. The email alternative includes the list and estimate, but the customer must send it in their email app.
