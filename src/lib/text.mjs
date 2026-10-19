@@ -1,0 +1,1 @@
+export function cleanDescription(value){return String(value||'').split(/\n[^\n]{0,8}(?:HOW TO ORDER|SHIPPING & PACKAGING|NEED HELP\?|SEARCH TAGS)|FEEDBACK|Kindly rate us|Please rate us|\b5 STARS\b/i)[0].split('\n').filter(line=>!/(?:Shopee|ShopeePay|GCash|Maya|\bCOD\b|Buy Now|Add to Cart|same.day dispatch|cut.off|days.to.ship|accredited couriers)/i.test(line)).join('\n').trim();}

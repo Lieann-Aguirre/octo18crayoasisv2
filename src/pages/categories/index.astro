@@ -1,0 +1,4 @@
+---
+import Base from '../../layouts/Base.astro';import {categories,products} from '../../lib/catalog';
+---
+<Base title="Stationery categories"><section class="page-heading"><div class="container"><span class="eyebrow">EVERYTHING IN ITS PLACE</span><h1>What’s on your list?</h1><p>Find the right supplies for your classroom, desk or creative project.</p></div></section><section class="section container"><div class="category-grid">{categories.map((c,i)=><a class={`category-tile category-${i}`} href={`/categories/${c.slug}/`}><span class="category-icon">{c.icon}</span><h2 style="font-size:1.1rem">{c.name}</h2><p style="font-size:.8rem">{c.description}</p><span class="category-count">{products.filter(p=>p.category===c.slug).length} essentials ↗</span></a>)}</div></section></Base>

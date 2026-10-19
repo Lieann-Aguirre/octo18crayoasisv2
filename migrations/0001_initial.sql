@@ -1,0 +1,10 @@
+PRAGMA foreign_keys=ON;
+CREATE TABLE products (id TEXT PRIMARY KEY, slug TEXT NOT NULL UNIQUE, data TEXT NOT NULL CHECK(json_valid(data)), updated_at TEXT NOT NULL);
+CREATE TABLE settings (id INTEGER PRIMARY KEY CHECK(id=1), data TEXT NOT NULL CHECK(json_valid(data)));
+CREATE TABLE publications (id TEXT PRIMARY KEY, data TEXT NOT NULL CHECK(json_valid(data)), state TEXT NOT NULL DEFAULT 'pending', deployment_id TEXT, deployment_url TEXT, error TEXT, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE UNIQUE INDEX publication_inflight ON publications((1)) WHERE state IN ('pending','building');
+CREATE TABLE quotes (id TEXT PRIMARY KEY, reference TEXT NOT NULL UNIQUE, fingerprint TEXT NOT NULL, data TEXT NOT NULL CHECK(json_valid(data)), status TEXT NOT NULL DEFAULT 'New', notes TEXT NOT NULL DEFAULT '', notification TEXT NOT NULL DEFAULT 'pending', notification_attempts INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE rate_limits (key TEXT PRIMARY KEY, count INTEGER NOT NULL, expires INTEGER NOT NULL);
+CREATE TABLE audit_log (id INTEGER PRIMARY KEY AUTOINCREMENT, action TEXT NOT NULL, actor TEXT NOT NULL, target TEXT, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE INDEX quotes_date ON quotes(created_at);
+CREATE INDEX publication_date ON publications(created_at);

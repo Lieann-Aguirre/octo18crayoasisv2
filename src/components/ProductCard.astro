@@ -1,0 +1,7 @@
+---
+import type {Product} from '../lib/model';
+import {image,price} from '../lib/catalog';
+import Icon from './Icon.astro';
+const {product:p}=Astro.props as {product:Product};
+---
+<article class="product-card" data-product-id={p.id}><a class="product-picture" href={`/products/${p.slug}/`}><img src={image(p)} srcset={image(p).startsWith('/product-images/')?`${image(p).replace('-480','-240')} 240w, ${image(p)} 480w, ${image(p).replace('-480','-960')} 960w`:undefined} sizes="(max-width:560px) 45vw, (max-width:800px) 40vw, 280px" alt={p.images[0]?.alt||p.name} width="480" height="480" loading="lazy" decoding="async" referrerpolicy="no-referrer"/>{p.newArrival&&<span class="badge">JUST ARRIVED</span>}<span class="picture-arrow"><Icon name="arrow" size={18}/></span></a><div class="product-copy"><span class="brand">{p.brand==='Unspecified'?'EVERYDAY ESSENTIALS':p.brand}</span><h3><a href={`/products/${p.slug}/`}>{p.name}</a></h3><div class="product-bottom"><div><strong>{price(p)}</strong><small>{p.priceApproved?'Indicative price · confirm by quote':'Choose options & inquire'}</small></div><a class="small-quote" href={`/products/${p.slug}/`} aria-label={`View ${p.name}`}><Icon name="bag" size={19}/></a></div></div></article>

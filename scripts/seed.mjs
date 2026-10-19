@@ -1,0 +1,3 @@
+import {readFile,writeFile} from 'node:fs/promises';
+const products=JSON.parse(await readFile('data/products.json','utf8'));const settings=JSON.parse(await readFile('data/settings.json','utf8'));const sql=s=>`'${String(s).replaceAll("'","''")}'`;
+const statements=products.map(p=>`INSERT OR IGNORE INTO products(id,slug,data,updated_at) VALUES(${sql(p.id)},${sql(p.slug)},${sql(JSON.stringify(p))},datetime('now'));`);statements.push(`INSERT OR IGNORE INTO settings(id,data) VALUES(1,${sql(JSON.stringify(settings))});`);await writeFile('data/seed.sql',statements.join('\n'));console.log('data/seed.sql ready; existing dashboard edits will not be overwritten.');

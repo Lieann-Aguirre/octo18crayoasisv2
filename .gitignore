@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.wrangler/
+.env
+.dev.vars
+playwright-report/
+test-results/
+data/imports/
+data/seed.sql
+tmp/
+public/publication.json
+public/product-images/
+data/build-catalog.json

@@ -1,0 +1,23 @@
+import XLSX from 'xlsx';
+import {mkdir,writeFile,readFile,readdir} from 'node:fs/promises';
+import path from 'node:path';
+import {cleanDescription} from '../src/lib/text.mjs';
+const dir=process.argv[2]||path.join(process.env.USERPROFILE||'','Downloads');
+const files=await readdir(dir);
+const load=async(type)=>{const file=files.find(f=>f.startsWith(`mass_update_${type}_info_957457780_`)&&f.endsWith('.xlsx'));if(!file)throw Error(`Missing ${type} workbook in ${dir}`);const w=XLSX.read(await readFile(path.join(dir,file)),{type:'buffer'});const rows=XLSX.utils.sheet_to_json(w.Sheets[w.SheetNames[0]],{header:1,defval:''});return {file,rows:rows.slice(6).filter(r=>/^\d+$/.test(String(r[0])))};};
+const basic=await load('basic'),media=await load('media'),sales=await load('sales'),shipping=await load('shipping');
+const mm=new Map(media.rows.map(r=>[String(r[0]),r])),sm=new Map(shipping.rows.map(r=>[`${r[0]}:${r[3]}`,r]));
+const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+function category(s){if(/Pencils/.test(s))return 'pencils';if(/Pens|Markers|Highlighters|Correction/.test(s))return 'pens-writing';if(/Notebooks|Books &/.test(s))return 'notebooks-record-books';if(/Art Paper/.test(s))return 'art-materials';if(/Printing/.test(s))return 'paper-printing';if(/Envelopes|Folders|Book Covers/.test(s))return 'filing-envelopes';if(/Glues|Tapes/.test(s))return 'adhesives';return 'office-accessories';}
+const brands=['Faber Castell','Paperone','Hardcopy','Artline','Sharpie','Mongol','Pilot','Stabilo','Dong-A','Elmer\'s','IK Plus','IK Copy','IK Eco','HBW','Joy','LCT','Armak','Avia','FlexStick','Tiger','Inspire','Multiprint','Copy and Laser','Stick-up'];
+const report={sources:[basic.file,media.file,sales.file,shipping.file],products:0,variants:0,images:0,unmatchedSales:[],unmatchedShipping:[],duplicateProducts:[],issues:[]};
+const products=basic.rows.map(r=>{const id=String(r[0]),m=mm.get(id)||[],cat=category(String(m[3]));let name=String(r[2]).replace(/\(COD\)|\bCOD\b/gi,'').replace(/\s+/g,' ').trim();if(name.length>120)name=name.slice(0,120).replace(/\s+\S*$/,'');const brand=brands.find(b=>name.toLowerCase().includes(b.toLowerCase()))||'Unspecified';const desc=cleanDescription(r[3]);
+ const images=[];const add=(url,role)=>{if(typeof url==='string'&&/^https:\/\//.test(url)&&!images.some(i=>i.url===url))images.push({url,role,alt:`${name}${role==='cover'?'':' — additional product view'}`,review:{status:'Pending',suitable:'Review needed',background:'Pending visual inspection',canva:'Pending image-specific review. Use the 1600 × 1600 px template after inspecting the original.',lighting:'Pending visual inspection',cropping:'Pending visual inspection',resolution:'Original dimensions must be checked',branding:'Pending visual inspection'}});};
+ for(let i=4;i<=12;i++)add(m[i],i===4?'cover':'gallery');for(let i=17;i<=37;i+=2)add(m[i],'variant');
+ const variants=sales.rows.filter(v=>String(v[0])===id).map(v=>{const s=sm.get(`${id}:${v[2]}`);if(!s)report.unmatchedShipping.push(`${id}:${v[2]}`);return {id:String(v[2]),name:String(v[3]||'Standard'),sku:String(v[5]||''),price:Number(v[6])||0,historicalStock:Number(v[8])||0,...s?{shipping:{weightKg:Number(s[5])||0,length:Number(s[6])||0,width:Number(s[7])||0,height:Number(s[8])||0,verified:false}}:{}};});
+ if(!variants.length)throw Error(`Product ${id} has no sales variants`);report.variants+=variants.length;report.images+=images.length;
+ if(/Multiprint/i.test(name)&&/Advance/i.test(desc))report.issues.push({id,issue:'Title and description disagree on brand: Multiprint / Advance'});
+ if(/2PCS PER PIECE|per batch|3pcs per order/i.test(name))report.issues.push({id,issue:'Selling unit/pack quantity needs confirmation'});
+ return {id,slug:`${slug(name).slice(0,100).replace(/-$/,'')}-${id}`,name,sourceName:String(r[2]),description:desc,brand,category:cat,sku:String(r[1]||id),unit:'pack / unit to be confirmed',packConfirmed:false,status:'draft',contentApproved:false,priceApproved:false,featured:false,popular:false,newArrival:false,collections:['office',...['pencils','pens-writing','art-materials','adhesives','notebooks-record-books'].includes(cat)?['school']:[]],images,variants,seoTitle:'',seoDescription:''};});
+report.products=products.length;const ids=new Set();for(const p of products){if(ids.has(p.id))report.duplicateProducts.push(p.id);ids.add(p.id);}report.unmatchedSales=sales.rows.filter(r=>!ids.has(String(r[0]))).map(r=>String(r[0]));
+await mkdir('data',{recursive:true});await writeFile('data/products.json',JSON.stringify(products,null,2));await writeFile('data/import-report.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));

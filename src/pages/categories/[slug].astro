@@ -1,0 +1,5 @@
+---
+import Base from '../../layouts/Base.astro';import CatalogGrid from '../../components/CatalogGrid.astro';import {categories,products} from '../../lib/catalog';
+export function getStaticPaths(){return categories.map(category=>({params:{slug:category.slug},props:{category}}));}const {category}=Astro.props;
+---
+<Base title={`${category.name} in Manila`} description={`${category.description} Inquire with Octo18 Crayoasis Stationery in Manila for prices and bulk quotations.`}><section class="page-heading"><div class="container"><div class="breadcrumbs"><a href="/">Home</a><span>/</span><a href="/categories/">Categories</a><span>/</span><span>{category.name}</span></div><h1>{category.name}</h1><p>{category.description}</p></div></section><CatalogGrid category={category.slug} products={products.filter(p=>p.category===category.slug)}/></Base>

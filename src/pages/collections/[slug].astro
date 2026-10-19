@@ -1,0 +1,5 @@
+---
+import Base from '../../layouts/Base.astro';import CatalogGrid from '../../components/CatalogGrid.astro';import {products} from '../../lib/catalog';
+export function getStaticPaths(){return ['school','office'].map(slug=>({params:{slug},props:{slug}}));}const {slug}=Astro.props;const school=slug==='school';
+---
+<Base title={`${school?'School':'Office'} supplies in Manila`}><section class="page-heading"><div class="container"><span class="eyebrow">{school?'READY FOR THE NEXT SCHOOL DAY':'GOOD THINGS FOR YOUR WORKSPACE'}</span><h1>{school?'Small supplies. Big learning.':'A well-stocked desk starts here.'}</h1><p>{school?'Classroom and study essentials for students, parents and teachers.':'Keep your office moving with paper, writing tools, filing supplies and more.'}</p></div></section><CatalogGrid collection={slug} products={products.filter(p=>p.collections.includes(slug as 'school'|'office'))}/></Base>

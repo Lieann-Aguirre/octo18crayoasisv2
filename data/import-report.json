@@ -1,0 +1,32 @@
+{
+  "sources": [
+    "mass_update_basic_info_957457780_20261019195711.xlsx",
+    "mass_update_media_info_957457780_20261019195730.xlsx",
+    "mass_update_sales_info_957457780_20261019195717.xlsx",
+    "mass_update_shipping_info_957457780_20261019195722.xlsx"
+  ],
+  "products": 54,
+  "variants": 190,
+  "images": 153,
+  "unmatchedSales": [],
+  "unmatchedShipping": [],
+  "duplicateProducts": [],
+  "issues": [
+    {
+      "id": "57166101259",
+      "issue": "Title and description disagree on brand: Multiprint / Advance"
+    },
+    {
+      "id": "42683600993",
+      "issue": "Selling unit/pack quantity needs confirmation"
+    },
+    {
+      "id": "22826035668",
+      "issue": "Selling unit/pack quantity needs confirmation"
+    },
+    {
+      "id": "22726034606",
+      "issue": "Selling unit/pack quantity needs confirmation"
+    }
+  ]
+}
