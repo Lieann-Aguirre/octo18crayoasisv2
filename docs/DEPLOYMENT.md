@@ -129,3 +129,9 @@ Renz should periodically review closed inquiries and remove personal data no lon
 ### Quote button unavailable
 
 A missing `PUBLIC_TURNSTILE_SITE_KEY` disables online submission at build time. Create a Turnstile widget covering the actual storefront hostname, set its public site key in the **Pages build environment**, and configure the paired `TURNSTILE_SECRET` on the **API Worker**. Rebuild Pages after changing the public key. Also confirm `/api/quotes` routes to the API Worker and an approved catalog publication exists. SMTP credentials alone do not enable submissions. Do not use Turnstile test keys in production. The email alternative includes the list and estimate, but the customer must send it in their email app.
+
+### Octo18 Access identifiers
+
+The confirmed team domain is `octo18.cloudflareaccess.com`; the configured administrator email is `felicianorenz029@gmail.com`. Both are set in `wrangler.jsonc`. The earlier login screenshot displayed `bold-mud-17de.cloudflareaccess.com`; after changing a team domain, start a fresh Access login using the current domain. Keep the existing JWT signature and audience checks enabled.
+
+`ACCESS_AUD` is not visible in the supplied screenshots. Copy the Application Audience (AUD) Tag from the Access application covering both admin paths and set it on the API Worker (a Worker secret can keep this dashboard-managed value outside Wrangler vars). It is separate from the team domain, Application ID and Microsoft client ID. No placeholder AUD is supplied, and an absent AUD keeps the admin API locked.

@@ -4,6 +4,6 @@
   "workers_dev":false,
   "d1_databases":[{"binding":"DB","database_name":"octo18","database_id":"2e4e5cf2-01ef-407e-8608-4bbee629a54d","migrations_dir":"migrations"}],
   "r2_buckets":[{"binding":"MEDIA","bucket_name":"octo18-media"}],
-  "vars":{"MICROSOFT_TENANT_ID":"56a2fda4-aa7f-430b-8034-130eca56916f","MICROSOFT_CLIENT_ID":"8e502901-6f2f-4af6-b0f9-641ab2d45eba","SMTP_USER":"octo18crayoasis@lieannaguirre.com","NOTIFY_FROM":"octo18crayoasis@lieannaguirre.com","SITE_ORIGIN":"https://octo18crayoasis.online","NOTIFY_TO":"felicianorenz029@gmail.com"},
+  "vars":{"ACCESS_TEAM_DOMAIN":"octo18.cloudflareaccess.com","ADMIN_EMAIL":"felicianorenz029@gmail.com","MICROSOFT_TENANT_ID":"56a2fda4-aa7f-430b-8034-130eca56916f","MICROSOFT_CLIENT_ID":"8e502901-6f2f-4af6-b0f9-641ab2d45eba","SMTP_USER":"octo18crayoasis@lieannaguirre.com","NOTIFY_FROM":"octo18crayoasis@lieannaguirre.com","SITE_ORIGIN":"https://octo18crayoasis.online","NOTIFY_TO":"felicianorenz029@gmail.com"},
   "triggers":{"crons":["*/15 * * * *"]}
 }

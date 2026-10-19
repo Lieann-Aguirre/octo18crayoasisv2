@@ -58,3 +58,17 @@ Online submission still requires `PUBLIC_TURNSTILE_SITE_KEY` in the Pages build,
 ## Weekly checks
 
 Review pending inquiries and failed notifications, confirm contact links, inspect important catalog changes, and back up before imports. Use Search Console and analytics to see which searches and products lead to qualified inquiries. Build school-season and office-restock campaigns around available products and real customer needs.
+
+## Owner approval and paper category update
+
+All 54 local products (190 variants, 153 images) carry owner approval. Twenty paper products are assigned to Paper & Printing Supplies; Paperclips remains in Office Equipment & Accessories. Existing selling units, descriptions, prices and image-editing recommendations are retained. Owner approval does not replace the remaining quotation confirmation of pack contents.
+
+To apply only these approvals and category corrections to existing production records, run from the project root:
+
+```powershell
+npx wrangler d1 execute octo18 --remote --file=data/approve-catalog.sql
+```
+
+This changes live D1 product records; it does not publish a catalog or send email. It updates only the 54 known source IDs and does not insert missing records. Repeating it does not duplicate products. Do not rerun the seed to apply approvals: its INSERT OR IGNORE statements preserve existing rows.
+
+Afterward open Products & images and confirm the records, then Publish & history → Publish approved catalog. The Pages build and publication status must succeed before quote submissions can use that catalog. If publication fails, resolve the displayed deployment configuration error; do not manually mark the publication successful. No remote changes were performed while preparing this update.
