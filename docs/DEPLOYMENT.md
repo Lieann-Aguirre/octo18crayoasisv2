@@ -1,5 +1,19 @@
 # Cloudflare deployment
 
+## Fixing the reported D1 deployment error
+
+Cloudflare error `10021: binding DB of type d1 must have a valid database_id` means `wrangler.jsonc` still has a placeholder or invalid D1 UUID. The Worker name and account ID are not database IDs. Telemetry is unrelated to this failure.
+
+1. In Cloudflare, open **Storage & databases → D1 → octo18** and copy its **Database ID**. If it does not exist, create a D1 database named `octo18` first.
+2. Replace only `REPLACE_WITH_D1_ID` in the `DB` binding with that UUID. Keep `binding: "DB"`. Keep the Worker name you selected (`octo18crayoasisv2`).
+3. Set `vars.SITE_ORIGIN` to your actual HTTPS storefront origin, without a trailing slash. Confirm the private `octo18-media` R2 bucket exists.
+4. Sign in locally with `npx wrangler login`, then apply the remote migrations and seed as described below.
+5. Use `npm run deploy:api` to validate the configuration before deploying. In Workers Builds, use `npm run check:api-config` as the build command and `npm run deploy:api` as the deploy command. This Worker serves the API only.
+
+For the **website**, create/connect a **Pages** project instead: build command `npm run build`, output directory `dist`, Node 24. Do not use a Workers deployment as the storefront. If Cloudflare says the project is disconnected from Git, reconnect the repository in the dashboard as a separate setup step. Upload the configuration changes to the connected repository before retrying a Git-triggered deployment.
+
+`npm run check:api-config` validates required values locally; a dry run cannot prove that a remote D1 database or R2 bucket exists or that deployment credentials can access it.
+
 ## 1. Required launch decisions
 
 Confirm the production domain, Renz’s login email, Facebook Page/Messenger URL, pickup instructions/hours, owner-approved prices and units, delivery wording, privacy/quotation wording, and any genuine reviews. The supplied Gmail address is the inquiry destination, not an assumed admin identity.
