@@ -12,7 +12,7 @@ export function calculateEstimate(items:EstimateInput[],products:Product[],publi
  let grandTotalCents=0,unpricedCount=0;
  const lines=items.map(item=>{if(!Number.isInteger(item.quantity)||item.quantity<1||item.quantity>1000000)throw Error('Enter a whole-number quantity from 1 to 1,000,000.');
  const p=products.find(p=>p.id===item.productId),v=p?.variants.find(v=>v.id===item.variantId);
- const unitPriceCents=p?.priceApproved&&v&&v.price>0?Math.round(v.price*100):null;
+ const unitPriceCents=v&&v.price>0?Math.round(v.price*100):null;
  const subtotalCents=unitPriceCents===null?null:unitPriceCents*item.quantity;
  if(subtotalCents===null)unpricedCount++;else grandTotalCents+=subtotalCents;
  if(!Number.isSafeInteger(grandTotalCents))throw Error('This estimate is too large. Please request a smaller quantity or contact us directly.');

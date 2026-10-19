@@ -135,3 +135,20 @@ A missing `PUBLIC_TURNSTILE_SITE_KEY` disables online submission at build time. 
 The confirmed team domain is `octo18.cloudflareaccess.com`; the configured administrator email is `felicianorenz029@gmail.com`. Both are set in `wrangler.jsonc`. The earlier login screenshot displayed `bold-mud-17de.cloudflareaccess.com`; after changing a team domain, start a fresh Access login using the current domain. Keep the existing JWT signature and audience checks enabled.
 
 `ACCESS_AUD` is not visible in the supplied screenshots. Copy the Application Audience (AUD) Tag from the Access application covering both admin paths and set it on the API Worker (a Worker secret can keep this dashboard-managed value outside Wrangler vars). It is separate from the team domain, Application ID and Microsoft client ID. No placeholder AUD is supplied, and an absent AUD keeps the admin API locked.
+
+## Save-and-publish rollout (publication queue migration)
+
+Apply `migrations/0002_publication_queue.sql` before deploying the updated Worker. It adds a durable revision queue and triggers that increment the revision on product/settings inserts, updates and product deletion. It preserves existing products, legacy approval flags, visibility and publication history; no successful publication is fabricated.
+
+```powershell
+npx wrangler d1 migrations apply octo18 --remote
+npm run deploy:api
+```
+
+These are operator-run production actions; implementation and verification did not run them. Also release the updated Astro dashboard through the existing Pages pipeline. Use the current production build configuration, same CATALOG_BUILD_TOKEN on Pages and Worker, deploy hook, and Pages Read monitoring token. `REQUIRE_APPROVED_CATALOG` is retained as a legacy configuration name: it now means require an immutable catalog snapshot, not product approval flags.
+
+Save endpoints return `{saved:true, publication:{state,savedRevision,publishedRevision,configured,message,...}}`; import responses also retain their summary. `GET /api/admin/publication-status` verifies build progress and returns this status. `POST /api/admin/publish` explicitly resumes failed publication attempts; it does not increment revisions or fake deployment success. No public quotation API contract changed.
+
+The first publication after migration rebuilds the current visible catalog. Triggering a build requires all existing deployment settings. A missing configuration retains edits with Saved status. Hook/build failures pause automatic attempts until Retry; newer edits remain durable. One active immutable snapshot is enforced by the existing partial unique index. A single SQL statement captures its products, settings and revision consistently; later edits queue another snapshot. A successful Pages stage AND matching storefront publication.json marker are required before advancing the live revision or using its prices for new inquiries. Keep PUBLICATION_ID unset for normal automatic publishing.
+
+The dashboard polls status every 10 seconds while Publish & history is open; cron continues every 15 minutes when it is closed. A reservation with no matching deployment for 30 minutes becomes Failed and pauses; inspect Pages build logs before using Retry. This recovers interrupted hook requests or missing callbacks without falsely declaring a publication successful. Existing Access policies, private media routing and quotation protection remain in force.

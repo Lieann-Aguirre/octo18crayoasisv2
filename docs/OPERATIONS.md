@@ -1,17 +1,17 @@
 # Renz’s operating guide
 
-## Prepare and publish a product
+## Save and publish a product
 
-1. Sign in at `/admin/` through Cloudflare Access.
-2. Choose a product. Confirm its name, brand, category, description, selling unit and exact pack contents.
-3. Check each option and price. Tick the price approval only if the PHP prices should be public. Otherwise visitors see “Request a price”.
-4. Inspect every image. Read its recorded Canva recommendations, replace poor/mismatched images, and remove redundant images. An edited image is not approved until you inspect the result.
-5. Record suitability, background, lighting, crop, resolution, branding and editing recommendations. Set acceptable images to Approved. Use one clearly identified cover.
-6. Confirm content and pack approval. Select Featured, Popular Pick, New Arrival and the relevant collections only where appropriate. “Popular Pick” is your selection, not a fabricated sales ranking.
-7. Save. Preview the draft. Select “Include in next approved publication”.
-8. Open Publish & history, check any outstanding issues and publish. Wait for the matching deployment to report success before treating the public catalog as updated.
+1. Sign in at `/admin/` through Cloudflare Access and choose a product.
+2. Edit its details, category, selling unit, variants and prices. Positive prices display publicly; zero means Price on request.
+3. Add a cover image. Image review findings and Canva recommendations are advisory and remain available; there are no approval checkboxes.
+4. Choose Visible or Hidden. Existing drafts remain hidden; new products default to Visible.
+5. Select Save and publish. The edit is saved first and a catalog snapshot is queued automatically. Business settings and confirmed imports behave the same way.
+6. Open Publish & history to see Saved, Queued, Building, Live or Failed. This panel refreshes every ten seconds. Edits made during a build are combined into the next build.
 
-Saving never updates the public website by itself. Failed builds leave the last successful version in place. Changing a category URL or product slug changes its public URL; ask your developer to add a permanent redirect when changing an established URL.
+A failed build preserves saved edits and the last working public site. Correct its cause, then use Publish latest / Retry. Missing deploy-hook/token/monitoring configuration reports Saved—publishing needs configuration. Do not assume an edit is public until the matching publication is Live. Pages builds still take time. The existing cron also checks publication progress every 15 minutes when the dashboard is closed.
+
+Product/variant IDs and URLs must remain valid and unique, visible products need a cover image and category references must exist. Changing an established URL may need a redirect. Review permission requirements for customer testimonials remain unchanged.
 
 ## Image editing in Canva
 
@@ -27,7 +27,7 @@ Never promise fixed delivery fees, nationwide coverage, stock availability, cust
 
 ## Import another export
 
-Select all four matching basic/media/sales/shipping workbooks in Import products. Review the additions and updates before confirming. Existing editorial text and image reviews remain; source prices/variants refresh and content/pack/price approvals reset. Check new options and model changes carefully. The import does not delete products absent from an export. Save products individually to add or remove options or retire a product by changing its publication selection to Draft, then publish.
+Select all four matching basic/media/sales/shipping workbooks in Import products. Review the additions and updates before confirming. Existing editorial text, categories, image recommendations and visibility remain; source prices/variants refresh. New imported products become visible. Confirming the import queues publication automatically. Check new options and model changes carefully. The import does not delete products absent from an export. Save products individually to add or remove options or hide a product by changing Visibility to Hidden and selecting Save and publish.
 
 ## Handle quotations
 
