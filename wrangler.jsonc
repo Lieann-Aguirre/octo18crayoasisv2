@@ -1,6 +1,6 @@
 {
   "$schema":"node_modules/wrangler/config-schema.json",
-  "name":"octo18-api","main":"worker/index.ts","compatibility_date":"2026-10-19",
+  "name": "octo18crayoasisv2","main":"worker/index.ts","compatibility_date":"2026-10-19",
   "workers_dev":false,
   "d1_databases":[{"binding":"DB","database_name":"octo18","database_id":"REPLACE_WITH_D1_ID","migrations_dir":"migrations"}],
   "r2_buckets":[{"binding":"MEDIA","bucket_name":"octo18-media"}],
