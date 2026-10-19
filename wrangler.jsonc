@@ -1,7 +1,7 @@
 {
   "$schema":"node_modules/wrangler/config-schema.json",
   "name": "octo18crayoasisv2","main":"worker/index.ts","compatibility_date":"2026-10-19",
-  "workers_dev":true,
+  "workers_dev":false,
   "d1_databases":[{"binding":"DB","database_name":"octo18","database_id":"2e4e5cf2-01ef-407e-8608-4bbee629a54d","migrations_dir":"migrations"}],
   "r2_buckets":[{"binding":"MEDIA","bucket_name":"octo18-media"}],
   "vars":{"SITE_ORIGIN":"octo18crayoasisv2.lieannaguirre.workers.dev"},
