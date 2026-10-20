@@ -11,4 +11,14 @@ for(const p of catalog.products.filter(p=>p.status==='published')){
  try{const data=JSON.parse(embedded||'{}');if(data.id!==p.id||data.name!==p.name||data.description!==p.description)errors.push(`${p.id}: stale generated product payload`);}catch{errors.push(`${p.id}: invalid product payload`);}
 }
 if(!catalog.preview){for(const file of htmls){const html=await readFile(file,'utf8');if(!html.includes(`name="octo18-publication" content="${catalog.publicationId}"`))errors.push(`${file}: stale publication metadata`);}}
-if(errors.length)throw Error(errors.slice(0,25).join('\n'));console.log(`Verified ${htmls.length} HTML pages: internal links/assets, metadata, JSON-LD, product payload consistency, price gating and preview indexing.`);
+const home=await readFile('dist/index.html','utf8');
+const campaignTags=[...home.matchAll(/<div\b[^>]*\bdata-carousel-slide\b[^>]*>/g)].map(m=>m[0]);
+if(campaignTags.length<1||campaignTags.filter(tag=>! /\shidden(?:[\s=>])/.test(tag)).length!==1)errors.push('Homepage: exactly one campaign must be visible without JavaScript');
+if(campaignTags.filter(tag=>/\sinert(?:[\s=>])/.test(tag)).length!==campaignTags.length-1)errors.push('Homepage: inactive campaigns must be inert');
+for(const img of home.matchAll(/<img\b[^>]*\bdata-carousel-src=[^>]*>/g))if(/\s(?:src|srcset)=/.test(img[0]))errors.push('Homepage: deferred carousel images must not download before selection');
+const categoryCards=(home.match(/class="category-tile photographic-category"/g)||[]).length;
+const stockedCategories=new Set(catalog.products.filter(p=>p.status==='published').map(p=>p.category));
+if(categoryCards!==stockedCategories.size)errors.push('Homepage: stocked category highlights do not match catalog');
+const font=await readFile('dist/fonts/InterVariable.woff2');
+if(font.subarray(0,4).toString()!=='wOF2')errors.push('Invalid local Inter WOFF2 file');
+if(errors.length)throw Error(errors.slice(0,25).join('\n'));console.log(`Verified ${htmls.length} HTML pages: internal links/assets, metadata, JSON-LD, product payload consistency, price gating, preview indexing and progressive homepage rendering.`);

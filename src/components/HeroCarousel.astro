@@ -1,0 +1,26 @@
+---
+import {campaigns,selectCampaignProducts} from '../lib/homepage';
+import {products,image} from '../lib/catalog';
+import Icon from './Icon.astro';
+const responsive=(url:string)=>url.startsWith('/product-images/')?`${url} 480w, ${url.replace('-480','-960')} 960w`:undefined;
+---
+<section class="campaign-carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="Featured collections">
+ <div class="campaign-viewport" data-carousel-viewport>
+  {campaigns.map((campaign,index)=><div id={`campaign-${campaign.key}`} class={`campaign-slide campaign-${campaign.key}`} data-carousel-slide data-label={campaign.label} role="group" aria-roledescription="slide" aria-label={`${index+1} of ${campaigns.length}: ${campaign.label}`} hidden={index!==0} inert={index!==0}>
+   <div class="container campaign-grid">
+    <div class="campaign-copy"><span class="eyebrow">{campaign.eyebrow}</span><h2>{campaign.title}</h2><p>{campaign.description}</p><div class="button-row"><a class="button" href={campaign.href}>{campaign.action}<Icon name="arrow" size={18}/></a><a class="campaign-secondary" href="/request-a-quote/">Request a quotation <span aria-hidden="true">↗</span></a></div><p class="campaign-service">Manila-based service · Pickup in Tondo by arrangement</p></div>
+    <div class="campaign-photography" aria-label={`${campaign.label} product selection`}>
+     {selectCampaignProducts(products,campaign.productIds,campaign.fallbackCategory).map((p,i)=><figure class={`campaign-photo campaign-photo-${i}`}><img src={index===0?image(p):undefined} srcset={index===0?responsive(image(p)):undefined} data-carousel-src={index!==0?image(p):undefined} data-carousel-srcset={index!==0?responsive(image(p)):undefined} sizes="(max-width:560px) 44vw, (max-width:1000px) 25vw, 320px" alt={p.images.find(im=>im.role==='cover')?.alt||p.name} width="480" height="480" loading={index===0?'eager':'lazy'} fetchpriority={index===0&&i===0?'high':undefined} decoding="async"/><figcaption>{p.name}</figcaption></figure>)}
+     <span class="campaign-caption">{campaign.label}</span>
+    </div>
+   </div>
+  </div>)}
+ </div>
+ <div class="container carousel-controls" data-carousel-controls hidden>
+  <div class="carousel-arrows"><button type="button" data-carousel-prev aria-label="Previous collection">←</button><button type="button" data-carousel-next aria-label="Next collection">→</button><span data-carousel-position aria-hidden="true">1 / {campaigns.length}</span></div>
+  <div class="carousel-indicators" aria-label="Choose a featured collection">{campaigns.map((c,i)=><button type="button" data-carousel-dot={i} aria-controls={`campaign-${c.key}`} aria-label={`Show ${c.label}, slide ${i+1} of ${campaigns.length}`} aria-current={i===0?'true':undefined}><span></span></button>)}</div>
+  <button type="button" class="carousel-play" data-carousel-play>Pause slideshow</button>
+ </div>
+ <span class="sr-only" role="status" aria-live="polite" aria-atomic="true" data-carousel-announcement></span>
+</section>
+<script>import {initCarousels} from '../scripts/carousel';initCarousels();</script>
