@@ -99,3 +99,17 @@ Requests are saved before notification. Failed sends retain the request and use 
 - [App-only SMTP OAuth, service principal registration and mailbox grants](https://learn.microsoft.com/en-us/exchange/client-developer/legacy-protocols/how-to-authenticate-an-imap-pop-smtp-application-by-using-oauth)
 - [Mailbox SMTP AUTH configuration](https://learn.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/authenticated-client-smtp-submission)
 - [SendAs permission](https://learn.microsoft.com/en-us/powershell/module/exchangepowershell/add-recipientpermission?view=exchange-ps)
+
+## Delivery failure diagnosis
+
+After the authorized live test, quotation O18-20261020-3FBFEFACC50B was saved with PHP 255.64 while its notification failed. Catalog publication and quote persistence are working; that failure is specific to notification delivery.
+
+The Worker now records a safe `notificationFailure` inside the private inquiry JSON (no schema migration). Quote inbox displays its SMTP stage and numeric error code; successful retries clear the previous failure. No access tokens, client secrets or raw Microsoft/SMTP error descriptions are stored.
+
+- `oauth` / Microsoft 7000215: check that MICROSOFT_CLIENT_SECRET contains the application secret VALUE, not its ID, file path or encrypted XML.
+- `oauth` / Microsoft 7000222: rotate an expired application secret.
+- `authentication` / SMTP 535: verify SMTP.SendAsApp admin consent, the Exchange service principal's Enterprise App object ID and mailbox grants, and mailbox SMTP AUTH policy.
+- `sender` rejection: verify the dedicated mailbox and SendAs grant match SMTP_USER and NOTIFY_FROM.
+- `connect` or `tls`: check network/runtime TLS errors without weakening STARTTLS.
+
+Deploy the Worker update and rebuild the dashboard to display this diagnostic. Retry the existing TEST ONLY inquiry rather than generating additional requests. Do not claim inbox delivery until the notification is accepted and the recipient confirms receipt.

@@ -4,4 +4,11 @@ for(const file of htmls){const html=await readFile(file,'utf8');const title=html
  for(const match of html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)){try{JSON.parse(match[1]);}catch{errors.push(`${file}: invalid JSON-LD`);}}
 }
 for(const p of catalog.products.filter(p=>p.status==='published')){const html=await readFile(`dist/products/${p.slug}/index.html`,'utf8');if(p.variants.some(v=>v.price<=0)&&html.includes('AggregateOffer'))errors.push(`${p.id}: unpriced offer markup`);if(/historicalStock|weightKg/.test(html))errors.push(`${p.id}: private source data leaked`);}
-if(errors.length)throw Error(errors.slice(0,25).join('\n'));console.log(`Verified ${htmls.length} HTML pages: internal links/assets, metadata, JSON-LD, price gating and preview indexing.`);
+// A new marker beside stale product HTML must fail the build, not masquerade as a new catalog.
+for(const p of catalog.products.filter(p=>p.status==='published')){
+ const html=await readFile(`dist/products/${p.slug}/index.html`,'utf8');
+ const embedded=html.match(/<script[^>]*id="product-data"[^>]*>([\s\S]*?)<\/script>/)?.[1];
+ try{const data=JSON.parse(embedded||'{}');if(data.id!==p.id||data.name!==p.name||data.description!==p.description)errors.push(`${p.id}: stale generated product payload`);}catch{errors.push(`${p.id}: invalid product payload`);}
+}
+if(!catalog.preview){for(const file of htmls){const html=await readFile(file,'utf8');if(!html.includes(`name="octo18-publication" content="${catalog.publicationId}"`))errors.push(`${file}: stale publication metadata`);}}
+if(errors.length)throw Error(errors.slice(0,25).join('\n'));console.log(`Verified ${htmls.length} HTML pages: internal links/assets, metadata, JSON-LD, product payload consistency, price gating and preview indexing.`);

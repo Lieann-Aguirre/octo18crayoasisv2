@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {sendMicrosoftSmtp,messageData,type SmtpConfig,type Connector} from '../worker/microsoft-smtp';
+import {sendMicrosoftSmtp,messageData,notificationFailure,type SmtpConfig,type Connector} from '../worker/microsoft-smtp';
 const config:SmtpConfig={MICROSOFT_TENANT_ID:'56a2fda4-aa7f-430b-8034-130eca56916f',MICROSOFT_CLIENT_ID:'8e502901-6f2f-4af6-b0f9-641ab2d45eba',MICROSOFT_CLIENT_SECRET:'fake',SMTP_USER:'sender@example.com',NOTIFY_FROM:'sender@example.com',NOTIFY_TO:'recipient@example.com'};
 const mail={id:'abc-123',subject:'Quote request',text:'PHP 100 × 2\nEstimated Grand Total: PHP 200',replyTo:'buyer@example.com'};
 function fake(noTls=false,rejectData=false){const writes:string[]=[];let upgraded=false;const encoder=new TextEncoder();
@@ -14,3 +14,6 @@ test('SMTP upgrades TLS before OAuth, handles fragmented multiline responses and
 test('SMTP fails closed without STARTTLS and when DATA is rejected',async()=>{const previous=globalThis.fetch;globalThis.fetch=async()=>new Response(JSON.stringify({access_token:'token'}));try{const server=fake(true);await assert.rejects(sendMicrosoftSmtp(config,mail,server.connect),/STARTTLS/);assert(!server.writes.some(v=>v.startsWith('AUTH')));await assert.rejects(sendMicrosoftSmtp(config,mail,fake(false,true).connect),/rejected/);}finally{globalThis.fetch=previous;}});
 test('mail headers reject injection; body is encoded and stable Message-ID retained',()=>{assert.throws(()=>messageData(config,{...mail,replyTo:'buyer@example.com\r\nBcc: victim@example.com'}));assert.throws(()=>messageData(config,{...mail,subject:'Quote\r\nBcc: victim@example.com'}));const data=messageData(config,mail);assert.match(data,/Message-ID: <quote-abc-123@example.com>/);const encoded=data.split('\r\n\r\n')[1].replace(/\r\n\.\r\n$/,'').replaceAll('\r\n','');assert.equal(Buffer.from(encoded,'base64').toString('utf8'),mail.text);});
 test('token failure never opens SMTP connection',async()=>{const previous=globalThis.fetch;globalThis.fetch=async()=>new Response('{}',{status:401});try{await assert.rejects(sendMicrosoftSmtp(config,mail,async()=>{throw new Error('must not connect');}),/token request failed/);}finally{globalThis.fetch=previous;}});
+
+
+test('OAuth failure exposes only safe stage and numeric Microsoft code',async()=>{const previous=globalThis.fetch;globalThis.fetch=async()=>new Response(JSON.stringify({error_codes:[7000215],error_description:'private-token-must-not-appear'}),{status:401});try{try{await sendMicrosoftSmtp(config,mail);assert.fail('Expected token failure');}catch(error){assert.deepEqual(notificationFailure(error),{stage:'oauth',code:'MICROSOFT_TOKEN_REJECTED',smtpCode:undefined,providerCode:7000215});assert(!JSON.stringify(notificationFailure(error)).includes('private-token'));}}finally{globalThis.fetch=previous;}});

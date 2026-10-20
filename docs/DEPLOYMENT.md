@@ -166,3 +166,11 @@ Run `pwsh -File scripts/release-cloudflare.ps1` for a non-mutating preview. To a
 - SMTP accepts Microsoft's empty 334 challenge, requires STARTTLS before authenticating, and leaves time for notification processing to finish within the Worker background limit. Configured credentials do not establish delivery; use a real operator-approved quote and check the inbox/status after launch.
 
 To finish a live audit, browser access to dash.cloudflare.com must be permitted in the app's saved browser permissions. A chat reply alone cannot override a saved tool denial. Do not share tokens or secrets in chat.
+
+## Successful Pages build still shown as pending
+
+The supplied deployment log for 225dd2ce-8ff6-4c5c-afd1-3eb928f4c3bd ended with assets published and site deployed. Public checks also found API version 2 and publication.json matching pending publication f81786f6-dd80-4b70-b234-536957bce477. Approval and Astro compilation were not blocking that deployment.
+
+Release `2026-10-20-publish-on-save-r2` makes deployment matching accept Pages aliases and normalize URL slashes, requests up to 100 metadata records, and recovers a missing/outdated callback by checking publication.json on up to five successful production deployment URLs. Recovery requires the exact immutable publication ID; preview, failed, malformed or foreign deployment URLs do not qualify. The existing storefront marker check still applies before the live revision advances.
+
+Publish the updated API with `npm run deploy:api` (Wrangler preserves dashboard variables). Refresh Admin → Publish & history to reconcile the active publication. If the old publication has already timed out, use Publish latest / Retry and allow a fresh build. No new migration is needed for this matching fix. Rebuild Pages for the new no-cache marker header and clearer publication/callback log lines. The Worker-only Wrangler warning in the supplied successful Pages log is nonfatal; do not add Worker bindings to the static storefront merely to suppress it.

@@ -3,6 +3,12 @@ export interface SmtpConfig {
   SMTP_USER:string; NOTIFY_FROM:string; NOTIFY_TO:string;
 }
 export interface Mail {id:string;subject:string;text:string;replyTo:string}
+export type MailStage='configuration'|'oauth'|'connect'|'greeting'|'tls'|'authentication'|'sender'|'recipient'|'message';
+export class SmtpDeliveryError extends Error{
+ constructor(public stage:MailStage,public code:string,message:string,public smtpCode?:number,public providerCode?:number){super(message);}
+}
+class SmtpResponseError extends Error{constructor(public smtpCode:number){super('SMTP command rejected');}}
+export function notificationFailure(error:unknown){return error instanceof SmtpDeliveryError?{stage:error.stage,code:error.code,smtpCode:error.smtpCode,providerCode:error.providerCode}:{stage:'unknown',code:'NOTIFICATION_FAILED'};}
 type Connection = Pick<Socket,'readable'|'writable'|'opened'|'closed'|'close'|'startTls'>;
 export type Connector = () => Promise<Connection>;
 const mailbox=(value:string)=>{
@@ -32,7 +38,7 @@ class Session {
         if(this.buffer.length>65536)throw new Error('SMTP response too large');
       }
       const index=this.buffer.indexOf('\r\n'),line=this.buffer.slice(0,index);this.buffer=this.buffer.slice(index+2);
-      if(!/^\d{3}(?:[ -]|$)/.test(line)||Number(line.slice(0,3))!==expected)throw new Error('SMTP command rejected');
+      if(!/^\d{3}(?:[ -]|$)/.test(line)||Number(line.slice(0,3))!==expected)throw new SmtpResponseError(Number(line.slice(0,3))||0);
       lines.push(line);if(line[3]!=='-')return lines.join('\n');
     }
     throw new Error('SMTP response too long');
@@ -44,33 +50,40 @@ const connectMicrosoft:Connector=async()=>{
   return connect({hostname:'smtp.office365.com',port:587},{secureTransport:'starttls',allowHalfOpen:false});
 };
 /** Fixed Microsoft endpoint: credentials are never sent to a configurable host. */
-export async function sendMicrosoftSmtp(config:SmtpConfig,mail:Mail,connect:Connector=connectMicrosoft){
+async function sendCore(config:SmtpConfig,mail:Mail,connect:Connector,onStage:(stage:MailStage)=>void){
   const data=messageData(config,mail);mailbox(config.SMTP_USER);
   if(config.SMTP_USER.toLowerCase()!==config.NOTIFY_FROM.toLowerCase())throw new Error('Sender must match SMTP mailbox');
   const guid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   if(!guid.test(config.MICROSOFT_TENANT_ID)||!guid.test(config.MICROSOFT_CLIENT_ID)||!config.MICROSOFT_CLIENT_SECRET)throw new Error('Microsoft credentials missing');
+  onStage('oauth');
   const tokenResponse=await fetch(`https://login.microsoftonline.com/${config.MICROSOFT_TENANT_ID}/oauth2/v2.0/token`,{
     method:'POST',body:new URLSearchParams({client_id:config.MICROSOFT_CLIENT_ID,client_secret:config.MICROSOFT_CLIENT_SECRET,grant_type:'client_credentials',scope:'https://outlook.office365.com/.default'}),signal:AbortSignal.timeout(10000)});
-  if(!tokenResponse.ok)throw new Error('Microsoft token request failed');
+  if(!tokenResponse.ok){let providerCode:number|undefined;try{const body=await tokenResponse.json() as {error_codes?:unknown[]};const candidate=body.error_codes?.[0];if(typeof candidate==='number'&&Number.isInteger(candidate)&&candidate>0&&candidate<100000000)providerCode=candidate;}catch{}throw new SmtpDeliveryError('oauth','MICROSOFT_TOKEN_REJECTED','Microsoft token request failed',undefined,providerCode);}
   const token=await tokenResponse.json() as {access_token?:string};
   if(!token.access_token||/[\x00-\x20]/.test(token.access_token))throw new Error('Invalid Microsoft token');
   let cancelled=false;let socket:Connection|undefined;let timer:ReturnType<typeof setTimeout>|undefined;
   try{
     await Promise.race([(async()=>{
-      socket=await connect();if(cancelled){await socket.close().catch(()=>{});throw new Error('SMTP timeout');}void socket.closed.catch(()=>{});await socket.opened;let session=new Session(socket);
-      await session.response(220);
+      onStage('connect');socket=await connect();if(cancelled){await socket.close().catch(()=>{});throw new Error('SMTP timeout');}void socket.closed.catch(()=>{});await socket.opened;let session=new Session(socket);
+      onStage('greeting');await session.response(220);
       const greeting=await session.command('EHLO octo18crayoasis.online',250);
       if(!/^250[ -]STARTTLS\b/im.test(greeting))throw new Error('SMTP requires STARTTLS');
-      await session.command('STARTTLS',220);session.release();socket=socket.startTls();void socket.closed.catch(()=>{});await socket.opened;
+      onStage('tls');await session.command('STARTTLS',220);session.release();socket=socket.startTls();void socket.closed.catch(()=>{});await socket.opened;
       session=new Session(socket);
       const secureGreeting=await session.command('EHLO octo18crayoasis.online',250);
       if(!/^250[ -]AUTH .*\bXOAUTH2\b/im.test(secureGreeting))throw new Error('SMTP requires XOAUTH2');
-      await session.command('AUTH XOAUTH2',334);
+      onStage('authentication');await session.command('AUTH XOAUTH2',334);
       await session.command(base64(`user=${config.SMTP_USER}\x01auth=Bearer ${token.access_token}\x01\x01`),235);
-      await session.command(`MAIL FROM:<${config.NOTIFY_FROM}>`,250);
-      await session.command(`RCPT TO:<${config.NOTIFY_TO}>`,250);
-      await session.command('DATA',354);await session.write(data);await session.response(250);
+      onStage('sender');await session.command(`MAIL FROM:<${config.NOTIFY_FROM}>`,250);
+      onStage('recipient');await session.command(`RCPT TO:<${config.NOTIFY_TO}>`,250);
+      onStage('message');await session.command('DATA',354);await session.write(data);await session.response(250);
       // The DATA acknowledgement establishes acceptance; QUIT failure must not retry accepted mail.
     })(),new Promise<never>((_,reject)=>{timer=setTimeout(()=>reject(new Error('SMTP timeout')),15000);})]);
   }finally{cancelled=true;if(timer)clearTimeout(timer);if(socket)await socket.close().catch(()=>{});}
+}
+
+export async function sendMicrosoftSmtp(config:SmtpConfig,mail:Mail,connect:Connector=connectMicrosoft){
+ let stage:MailStage='configuration';
+ try{await sendCore(config,mail,connect,value=>{stage=value;});}
+ catch(error){if(error instanceof SmtpDeliveryError)throw error;throw new SmtpDeliveryError(stage,`SMTP_${stage.toUpperCase()}_FAILED`,error instanceof Error?error.message:'Notification failed',error instanceof SmtpResponseError?error.smtpCode:undefined);}
 }

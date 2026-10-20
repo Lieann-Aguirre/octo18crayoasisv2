@@ -72,3 +72,7 @@ npx wrangler d1 execute octo18 --remote --file=data/approve-catalog.sql
 This changes live D1 product records; it does not publish a catalog or send email. It updates only the 54 known source IDs and does not insert missing records. Repeating it does not duplicate products. Do not rerun the seed to apply approvals: its INSERT OR IGNORE statements preserve existing rows.
 
 Afterward open Products & images and confirm the records, then Publish & history → Publish approved catalog. The Pages build and publication status must succeed before quote submissions can use that catalog. If publication fails, resolve the displayed deployment configuration error; do not manually mark the publication successful. No remote changes were performed while preparing this update.
+
+## Security widget errors
+
+The live publication f81786f6-dd80-4b70-b234-536957bce477 is confirmed live by the owner dashboard. An automated browser test subsequently failed before submission with Cloudflare Turnstile 300030; no quote or notification was created. This is a browser challenge failure, not a publishing failure. Keep server-side Turnstile verification enabled. The quote form now displays challenge error/expiry/loading states, offers a user-triggered retry, and preserves the existing email inquiry alternative. It does not inject tokens, substitute test keys, disable security or accept an unverified request. An actual human-completed submission is required to verify production email delivery.
