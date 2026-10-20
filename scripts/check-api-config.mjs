@@ -24,6 +24,13 @@ try {
 if (!config.r2_buckets?.some(binding => binding.binding === 'MEDIA' && binding.bucket_name)) {
   problems.push('Configure the MEDIA binding with the name of an existing private R2 bucket.');
 }
+const routes = (config.routes || []).map(route => typeof route === 'string' ? route : route.pattern);
+if (!routes.includes('octo18crayoasis.online/api/*') || !routes.includes('octo18crayoasis.online/media/*')) {
+  problems.push('Declare the /api/* and /media/* Worker routes. Keep the root storefront on Pages.');
+}
+if (routes.some(route => route === 'octo18crayoasis.online/*')) {
+  problems.push('The API must not replace the Pages root route.');
+}
 if (problems.length) {
   console.error(`API deployment is not configured:\n\n${problems.map(p => `- ${p}`).join('\n\n')}\n\nThis Worker deploys the API only. Deploy the Astro storefront with Cloudflare Pages: npm run build → dist.`);
   process.exit(1);

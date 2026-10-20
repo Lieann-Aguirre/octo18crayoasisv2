@@ -32,8 +32,8 @@ class Session {
         if(this.buffer.length>65536)throw new Error('SMTP response too large');
       }
       const index=this.buffer.indexOf('\r\n'),line=this.buffer.slice(0,index);this.buffer=this.buffer.slice(index+2);
-      if(!/^\d{3}[ -]/.test(line)||Number(line.slice(0,3))!==expected)throw new Error('SMTP command rejected');
-      lines.push(line);if(line[3]===' ')return lines.join('\n');
+      if(!/^\d{3}(?:[ -]|$)/.test(line)||Number(line.slice(0,3))!==expected)throw new Error('SMTP command rejected');
+      lines.push(line);if(line[3]!=='-')return lines.join('\n');
     }
     throw new Error('SMTP response too long');
   }
@@ -54,10 +54,10 @@ export async function sendMicrosoftSmtp(config:SmtpConfig,mail:Mail,connect:Conn
   if(!tokenResponse.ok)throw new Error('Microsoft token request failed');
   const token=await tokenResponse.json() as {access_token?:string};
   if(!token.access_token||/[\x00-\x20]/.test(token.access_token))throw new Error('Invalid Microsoft token');
-  let socket:Connection|undefined;let timer:ReturnType<typeof setTimeout>|undefined;
+  let cancelled=false;let socket:Connection|undefined;let timer:ReturnType<typeof setTimeout>|undefined;
   try{
     await Promise.race([(async()=>{
-      socket=await connect();void socket.closed.catch(()=>{});await socket.opened;let session=new Session(socket);
+      socket=await connect();if(cancelled){await socket.close().catch(()=>{});throw new Error('SMTP timeout');}void socket.closed.catch(()=>{});await socket.opened;let session=new Session(socket);
       await session.response(220);
       const greeting=await session.command('EHLO octo18crayoasis.online',250);
       if(!/^250[ -]STARTTLS\b/im.test(greeting))throw new Error('SMTP requires STARTTLS');
@@ -71,6 +71,6 @@ export async function sendMicrosoftSmtp(config:SmtpConfig,mail:Mail,connect:Conn
       await session.command(`RCPT TO:<${config.NOTIFY_TO}>`,250);
       await session.command('DATA',354);await session.write(data);await session.response(250);
       // The DATA acknowledgement establishes acceptance; QUIT failure must not retry accepted mail.
-    })(),new Promise<never>((_,reject)=>{timer=setTimeout(()=>reject(new Error('SMTP timeout')),20000);})]);
-  }finally{if(timer)clearTimeout(timer);if(socket)await socket.close().catch(()=>{});}
+    })(),new Promise<never>((_,reject)=>{timer=setTimeout(()=>reject(new Error('SMTP timeout')),15000);})]);
+  }finally{cancelled=true;if(timer)clearTimeout(timer);if(socket)await socket.close().catch(()=>{});}
 }

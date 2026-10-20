@@ -1,3 +1,4 @@
+import {diagnostics} from '../worker/diagnostics';
 import {advancePublication,publicationStatus,retryPublication} from '../worker/publication';
 import {calculateEstimate,estimateText} from '../src/lib/estimate';
 import test from 'node:test';import assert from 'node:assert/strict';import {DatabaseSync} from 'node:sqlite';import {readFileSync} from 'node:fs';
@@ -111,4 +112,17 @@ test('migration preserves legacy live publication and existing hidden products',
 
 test('an interrupted build reservation expires to Failed without marking the catalog live',async()=>{
  const f=fixture();seedQueue(f);configurePublishing(f.env);const previous=globalThis.fetch;globalThis.fetch=async()=>new Response('{}');try{await advancePublication(f.env);const active=(await publicationStatus(f.env)).active!;f.sqlite.prepare("UPDATE publications SET created_at=datetime('now','-31 minutes') WHERE id=?").run(active.id);globalThis.fetch=async()=>new Response(JSON.stringify({result:[]}));assert.equal((await pollPublication(f.env,active.id)).state,'failed');const status=await publicationStatus(f.env);assert.equal(status.state,'Failed');assert.equal(status.publishedRevision,0);}finally{globalThis.fetch=previous;}
+});
+
+
+test('health reports API compatibility without exposing any environment or private data',async()=>{
+ const f=fixture();f.env.MICROSOFT_CLIENT_SECRET='never-expose-this';const response=await worker.fetch(req('/api/health'),f.env,f.ctx);assert.equal(response.status,200);const health=await response.json() as {apiVersion:number;release:string};assert.equal(health.apiVersion,2);assert.match(health.release,/publish-on-save/);assert(!JSON.stringify(health).includes('never-expose-this'));assert.equal((await worker.fetch(req('/api/admin/diagnostics'),f.env,f.ctx)).status,401);
+});
+test('diagnostics identify all configuration and migration blockers without secret values',async()=>{
+ const f=fixture();f.env.CF_API_TOKEN='never-expose-token';const report=await diagnostics(f.env);assert.equal(report.database.ready,true);assert.equal(report.database.livePublication,null);assert(report.configuration.notifications.missing.includes('MICROSOFT_CLIENT_SECRET'));assert(report.configuration.publishing.missing.includes('CATALOG_BUILD_TOKEN'));assert(!JSON.stringify(report).includes('never-expose-token'));f.sqlite.exec('DROP TABLE publication_queue');const broken=await diagnostics(f.env);assert.equal(broken.database.ready,false);assert(broken.database.missingTables.includes('publication_queue'));
+});
+
+
+test('a deployed preview or HTML marker fails clearly instead of remaining building forever',async()=>{
+ const f=fixture();seedQueue(f);configurePublishing(f.env);const previous=globalThis.fetch;globalThis.fetch=async()=>new Response('{}');try{await advancePublication(f.env);const active=(await publicationStatus(f.env)).active!;f.sqlite.prepare("UPDATE publications SET created_at=datetime('now','-31 minutes'),deployment_url='https://one.shop.pages.dev' WHERE id=?").run(active.id);globalThis.fetch=async(url)=>String(url).endsWith('/publication.json')?new Response('<html>Preview</html>',{status:404,headers:{'Content-Type':'text/html'}}):new Response(JSON.stringify({result:[{id:'one',url:'https://one.shop.pages.dev',latest_stage:{name:'deploy',status:'success'}}]}));const result=await pollPublication(f.env,active.id);assert.equal(result.state,'failed');assert.match(result.message||'',/Production CATALOG_API_URL/);assert.equal((await publicationStatus(f.env)).publishedRevision,0);}finally{globalThis.fetch=previous;}
 });
