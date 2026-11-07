@@ -8,6 +8,21 @@ export async function publicationStatus(env:Env){
  const state=q.paused?'Failed':active?(active.state==='building'?'Building':'Queued'):q.saved_revision<=q.published_revision?'Live':configured?'Queued':'Saved';
  return {state,savedRevision:q.saved_revision,publishedRevision:q.published_revision,active,configured,error:q.error,message:!configured?'Saved—publishing needs configuration':q.error||state};
 }
+/** An explicit new save retries the latest revision, without requiring a second publish action. */
+export async function resumeSavedPublication(env:Env){
+ await env.DB.prepare('UPDATE publication_queue SET paused=0,error=NULL WHERE id=1 AND saved_revision>published_revision').run();
+ return publicationStatus(env);
+}
+/** An older failed build must not strand newer edits that were already queued. */
+export async function failPublication(env:Env,id:string,message:string){
+ await env.DB.batch([
+  env.DB.prepare("UPDATE publications SET state='failed',error=? WHERE id=? AND state IN ('pending','building')").bind(message,id),
+  env.DB.prepare(`UPDATE publication_queue SET
+   paused=CASE WHEN saved_revision>COALESCE((SELECT revision FROM publications WHERE id=?),saved_revision) THEN 0 ELSE 1 END,
+   error=CASE WHEN saved_revision>COALESCE((SELECT revision FROM publications WHERE id=?),saved_revision) THEN NULL ELSE ? END
+   WHERE id=1 AND EXISTS(SELECT 1 FROM publications WHERE id=? AND state='failed')`).bind(id,id,message,id)
+ ]);
+}
 export async function advancePublication(env:Env){
  const status=await publicationStatus(env);
  if(status.active||status.state==='Failed'||!status.configured||status.savedRevision<=status.publishedRevision)return status;
@@ -32,10 +47,7 @@ export async function advancePublication(env:Env){
   // Hook response IDs are not assumed to be Pages deployment IDs. Build callback records the actual deployment URL.
  }catch(error){
   const message=error instanceof Error?error.message:'Publishing failed';
-  await env.DB.batch([
-   env.DB.prepare("UPDATE publications SET state='failed',error=? WHERE id=? AND state IN ('pending','building')").bind(message,id),
-   env.DB.prepare('UPDATE publication_queue SET paused=1,error=? WHERE id=1').bind(message)
-  ]);
+  await failPublication(env,id,message);
  }
  return publicationStatus(env);
 }
