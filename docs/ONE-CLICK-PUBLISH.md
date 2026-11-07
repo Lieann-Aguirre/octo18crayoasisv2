@@ -35,3 +35,11 @@ Browser inspection could not attach to the currently open dashboard because of a
 
 The owner authorized the production release. D1 reported no pending migrations. Worker version eb914202-bcea-4881-a1e3-dbf6b8631f43 was deployed and the release script verified the exact r4 health response. The initial Cloudflare 7403 authorization error cleared on retry after checking the authenticated account. No live product content was changed for testing.
 
+
+## Follow-up: saved price not reaching storefront
+
+On 7 November, D1 contained both Multprint variants at PHP 65, saved revision 13, while publication monitoring was stuck on revision 4 and the verified revision was 3. Instrumenting the previously swallowed monitoring error revealed HTTP 400 / Cloudflare code 8000024. The deployment-list request used per_page=100. Changing it to 25 immediately cleared the error; the normal monitor verified revision 4 and queued revision 13 automatically. No publication was manually marked successful and no product values were changed for diagnosis.
+
+Monitoring failures now appear as safe HTTP/code diagnostics rather than indefinite build messages. Provider text and credentials are excluded. The admin validator is labelled “Validate product details”; a separate “View product on shop” anchor opens the existing stable product URL in a new tab. Unsaved drafts remain available through Preview draft.
+
+Regression coverage includes rejected monitoring credentials, sanitized error persistence/recovery and the deployment page-size contract. All 55 tests, Astro/Worker checks and static export passed.

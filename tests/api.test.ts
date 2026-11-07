@@ -4,7 +4,7 @@ import {diagnostics} from '../worker/diagnostics';
 import {advancePublication,publicationStatus,retryPublication,resumeSavedPublication} from '../worker/publication';
 import {calculateEstimate,estimateText} from '../src/lib/estimate';
 import test from 'node:test';import assert from 'node:assert/strict';import {DatabaseSync} from 'node:sqlite';import {readFileSync} from 'node:fs';
-import worker,{notify,pollPublication,publicCatalog,resolveItems,type Env} from '../worker/index';import {productSchema,publicationErrors,quoteSchema,type Product,type Settings} from '../src/lib/model';
+import worker,{notify,pollPublication,monitorPublication,publicCatalog,resolveItems,type Env} from '../worker/index';import {productSchema,publicationErrors,quoteSchema,type Product,type Settings} from '../src/lib/model';
 import {generateKeyPair,exportJWK,SignJWT} from 'jose';
 import {cleanDescription} from '../src/lib/text.mjs';
 const source=JSON.parse(readFileSync('data/products.json','utf8')) as Product[];const settings=JSON.parse(readFileSync('data/settings.json','utf8')) as Settings;
@@ -165,4 +165,26 @@ test('minute publication monitoring preserves fifteen-minute notification retry 
  const f=fixture(),q=validQuote();f.sqlite.prepare('INSERT INTO quotes(id,reference,fingerprint,data,notification_attempts) VALUES(?,?,?,?,1)').run(q.requestId,'TEST-CADENCE','test',JSON.stringify(q));
  await worker.scheduled({scheduledTime:60000} as ScheduledController,f.env,f.ctx);await Promise.all(f.jobs);assert.equal(f.sqlite.prepare('SELECT notification_attempts FROM quotes').get()?.notification_attempts,1);
  f.jobs.length=0;await worker.scheduled({scheduledTime:0} as ScheduledController,f.env,f.ctx);await Promise.all(f.jobs);assert.equal(f.sqlite.prepare('SELECT notification_attempts FROM quotes').get()?.notification_attempts,2);
+});
+
+
+test('monitoring authorization errors are visible, retained saves retry, and secrets stay private',async()=>{
+ const f=fixture();seedQueue(f);configurePublishing(f.env);const previous=globalThis.fetch;
+ globalThis.fetch=async()=>new Response('{}');
+ try{await advancePublication(f.env);const active=(await publicationStatus(f.env)).active!;
+ globalThis.fetch=async()=>new Response(JSON.stringify({errors:[{code:10000,message:'secret-provider-text'}]}),{status:403});
+ const result=await monitorPublication(f.env,active.id);assert.equal(result.state,'blocked');
+ const status=await publicationStatus(f.env);assert.match(status.error||'',/HTTP 403.*10000/);assert(!status.error?.includes('secret-provider-text'));assert.equal(status.publishedRevision,0);assert.equal(status.active?.id,active.id);
+ globalThis.fetch=async()=>new Response(JSON.stringify({result:[]}));await monitorPublication(f.env,active.id);assert.equal((await publicationStatus(f.env)).error,null);
+ }finally{globalThis.fetch=previous;}
+});
+
+
+test('Pages monitoring uses an accepted page size and clears a blocked queue after recovery',async()=>{
+ const f=fixture();seedQueue(f);configurePublishing(f.env);const previous=globalThis.fetch;
+ globalThis.fetch=async()=>new Response('{}');
+ try{await advancePublication(f.env);const active=(await publicationStatus(f.env)).active!;
+ globalThis.fetch=async(url)=>{const u=new URL(String(url));if(u.hostname==='api.cloudflare.com'){assert.equal(u.searchParams.get('per_page'),'25');return new Response(JSON.stringify({result:[]}));}return new Response('{}');};
+ f.sqlite.prepare("UPDATE publication_queue SET error='previous monitoring error'").run();await monitorPublication(f.env,active.id);assert.equal((await publicationStatus(f.env)).error,null);
+ }finally{globalThis.fetch=previous;}
 });
